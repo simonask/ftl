@@ -50,6 +50,10 @@ namespace ftl {
 	T max(T a, T b) {
 		return a > b ? a : b;
 	}
+	
+	inline bool is_numeric(char c) {
+		return c >= '0' && c <= '9';
+	}
 }
 
 #endif /* end of include guard: UTILS_HPP_SHV50JHA */

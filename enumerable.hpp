@@ -9,6 +9,11 @@ namespace ftl {
 
 	template <typename TargetClass, typename Enumerator = TargetClass>
 	class Enumerable {
+		/*
+			XXX: When deriving from Enumerable, it must be the first parent class.
+			This is because we want to avoid virtual functions, but Enumerable still needs
+			to access get_enumerator() on the derived class, so it does an ugly static_cast(this).
+		*/
 	public:
 		template <typename Functor>
 		SelectEnumerator<Enumerator, Functor> select(Functor func) const;

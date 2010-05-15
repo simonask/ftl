@@ -11,6 +11,7 @@ namespace ftl {
 	public:
 		ArrayRef(const T* data, size_t size) : _data(data), _size(size) {}
 		size_t size() const { return _size; }
+		const T* data() const { return _data; }
 		const T& operator[](size_t idx) const { ftl::assert(idx < _size); return _data[idx]; }
 	private:
 		const T* _data;

@@ -5,10 +5,10 @@
 #include <new>
 
 namespace ftl {
-	template <typename T>
-	void copy_construct_range(T* dst, const T* src, size_t n) {
+	template <typename T, typename... Args>
+	void construct_range(T* p, size_t n, Args... args) {
 		for (size_t i = 0; i < n; ++i) {
-			new(&dst[i]) T(src[i]);
+			new(p+i) T(args...);
 		}
 	}
 	
@@ -20,9 +20,23 @@ namespace ftl {
 	}
 	
 	template <typename T>
+	void copy_range(T* dst, const T* src, size_t n) {
+		for (size_t i = 0; i < n; ++i) {
+			dst[i] = src[i];
+		}
+	}
+	
+	template <typename T>
+	void copy_construct_range(T* dst, const T* src, size_t n) {
+		for (size_t i = 0; i < n; ++i) {
+			new(dst+i) T(src[i]);
+		}
+	}
+	
+	template <typename T>
 	void move_range(T* dst, T* src, size_t n) {
 		for (size_t i = 0; i < n; ++i) {
-			new(&dst[i]) T(src[i]);
+			new(dst+i) T(src[i]);
 			src[i].~T();
 		}
 	}

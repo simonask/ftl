@@ -5,7 +5,7 @@
 #include "string.hpp"
 #include "stringref.hpp"
 #include "stringbuffer.hpp"
-#include "string_conversion.hpp"
+#include "type_conversion.hpp"
 #include <stdio.h>
 #include <inttypes.h>
 
@@ -19,12 +19,12 @@ namespace ftl {
 	
 	template <typename T>
 	inline void convert_variadic_arguments_to_strings(String* target, const T& x) {
-		*target = convert_to_string(x);
+		*target = TypeConverter<T, String>::convert(x);
 	}
 	
 	template <typename T, typename... Rest>
 	inline void convert_variadic_arguments_to_strings(String* target, const T& x, const Rest&... rest) {
-		*target = convert_to_string(x);
+		*target = TypeConverter<T, String>::convert(x);
 		convert_variadic_arguments_to_strings(target+1, rest...);
 	}
 	

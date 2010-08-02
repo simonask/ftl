@@ -7,15 +7,22 @@
 #include "string.hpp"
 
 namespace ftl {
-	inline StringRef convert_to_string(const char* cstr) { return StringRef(cstr); }
-	inline const StringRef& convert_to_string(const StringRef& ref) { return ref; }
+	template <typename From, typename To>
+	struct TypeConverter {
+		static To convert(const From& f) { return f; }
+	};
+	
+	template <> struct TypeConverter<const char*, String> { static StringRef convert(const char* cstr) { return StringRef(cstr); } };
+	template <> struct TypeConverter<StringRef, String> { static StringRef convert(const StringRef& ref) { return ref; } };
 	
 	#define FTL_STRING_CONVERTER_SNPRINTF(TYPE, FORMAT_STRING) \
-		inline String convert_to_string(TYPE x) { \
-			char buffer[32]; \
-			snprintf(buffer, 32, FORMAT_STRING, x); \
-			return String(buffer); \
-		}
+		template <> struct TypeConverter<TYPE, String> {              \
+			static String convert(TYPE x) {                           \
+				char buffer[32];                               \
+				snprintf(buffer, 32, FORMAT_STRING, x);        \
+				return String(buffer);                         \
+			}                                                  \
+		};
 	
 	FTL_STRING_CONVERTER_SNPRINTF(int8_t, "%d")
 	FTL_STRING_CONVERTER_SNPRINTF(uint8_t, "%u")
@@ -32,9 +39,7 @@ namespace ftl {
 	
 	#undef FTL_STRING_CONVERTER_SNPRINTF
 	
-	inline StringRef convert_to_string(bool b) {
-		return b ? StringRef("true", 4) : StringRef("false", 5);
-	}
+	template <> struct TypeConverter<bool, String> { static StringRef convert(bool b) { return b ? StringRef("true") : StringRef("false"); } };
 }
 
 #endif /* end of include guard: STRING_CONVERSION_HPP_O2SNKJTM */

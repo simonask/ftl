@@ -32,6 +32,7 @@ namespace ftl {
 		char operator[](size_t idx) const { FTL_ASSERT(idx < _length); return _data[idx]; }
 		
 		String operator+(const StringRef& other) const;
+		String operator*(unsigned int multiplier) const;
 		StringEnumerator get_enumerator() const { return StringEnumerator(_data, _length); }
 	private:
 		void assign(const char* data, size_t len);
@@ -96,6 +97,17 @@ namespace ftl {
 		ret._data = new char[ret._length + 1];
 		copy_range(ret._data, a.c_str(), a.length());
 		copy_range(ret._data + a.length(), b.c_str(), b.length());
+		ret._data[ret._length] = '\0';
+		return ret;
+	}
+	
+	inline String String::operator*(unsigned int n) const {
+		String ret;
+		ret._length = _length * n;
+		ret._data = new char[ret._length];
+		for (size_t i = 0; i < n; ++i) {
+			copy_range(ret._data + i*_length, _data, _length);
+		}
 		ret._data[ret._length] = '\0';
 		return ret;
 	}

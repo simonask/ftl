@@ -8,8 +8,8 @@ namespace ftl {
 	public:
 		typedef T ValueType;
 		ArrayEnumerator() : _end(NULL), _current(NULL) {}
-		ArrayEnumerator(T* begin, T* end) : _end(end), _current(begin-1) {}
-		ArrayEnumerator(const ArrayEnumerator& other) : _end(other._end), _current(other._current) {}
+		ArrayEnumerator(T* begin, T* end) :  _current(begin-1), _end(end) {}
+		ArrayEnumerator(const ArrayEnumerator& other) : _current(other._current), _end(other._end) {}
 		bool move_next() { ++_current; return !at_end(); }
 		T& current() { return *_current; }
 		const T& current() const { return *_current; }

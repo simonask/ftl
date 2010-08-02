@@ -14,6 +14,15 @@ int main (int argc, char const *argv[])
 			TEST(a.size() == 1);
 			TEST(a[0] == 123);
 		});
+		
+		TEST_CASE("each", {
+			Array<int> a;
+			for (int i = 0; i < 10; ++i) {
+				a.push(i);
+			}
+			a.each([](int n) { print("{0}\n", n); });
+			TEST(true);
+		});
 	});
 	auto str = format("A number: {0}, the same number: {0}, something else: {1}", 123, "hejsa");
 	print("{0}\n", str);

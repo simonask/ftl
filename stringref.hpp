@@ -13,6 +13,7 @@ namespace ftl {
 	class StringRef : public Enumerable<StringRef, StringEnumerator> {
 	public:
 		typedef StringEnumerator Enumerator;
+		StringRef() : _data(NULL), _length(0) {}
 		StringRef(const char* cstr);
 		StringRef(const char* cstr, size_t len) : _data(cstr), _length(len) {}
 		StringRef(const StringRef& other) : _data(other._data), _length(other._length) {}

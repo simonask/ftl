@@ -82,15 +82,17 @@ namespace ftl {
 	template <typename T, size_t C>
 	T& MaxArray<T,C>::push(const T& x) {
 		FTL_ASSERT(_size < C);
-		T& e = data()[_size++];
-		e = x;
-		return e;
+		T* p = data() + _size++;
+		new(p) T(x);
+		return *p;
 	}
 	
 	template <typename T, size_t C>
 	T& MaxArray<T,C>::push() {
 		FTL_ASSERT(_size < C);
-		return data()[_size++];
+		T* p = data() + _size++;
+		new(p) T;
+		return *p;
 	}
 	
 	template <typename T, size_t C>
